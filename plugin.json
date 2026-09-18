@@ -1,0 +1,17 @@
+{
+  "ID": "7D2E8F3A-1B4C-4D9E-8F2A-3B6C9D0E1F2A",
+  "ActionKeywords": [
+    "tr",
+    "transl",
+    "translate"
+  ],
+  "Name": "DeepL Translate",
+  "Description": "Translate text using the DeepL API with automatic language detection and per-query language overrides",
+  "Author": "Nreel",
+  "Version": "1.0.0",
+  "Language": "csharp",
+  "Website": "https://www.deepl.com/",
+  "ExecuteFileName": "Flow.Launcher.Plugin.DeepLTranslate.dll",
+  "IcoPath": "Images\\deepl.png",
+  "SearchDelayTime": 450
+}

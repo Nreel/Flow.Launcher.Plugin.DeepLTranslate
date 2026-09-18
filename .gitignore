@@ -1,0 +1,50 @@
+## Build output
+bin/
+obj/
+*.dll
+*.pdb
+*.deps.json
+
+## Visual Studio / Rider / VS Code
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+*.DotSettings.user
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.assets.json
+*.nuget.props
+*.nuget.targets
+
+## MSBuild / test artifacts
+[Tt]est[Rr]esult*/
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+BenchmarkDotNet.Artifacts/
+
+## OS / editor noise
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*~
+*.swp
+*.bak
+*.bak-*
+
+## Local dev notes (planning scratch, not shipped)
+TODO.md
+TASKS.md
+.todo
+notes*.md

@@ -1,0 +1,76 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - '**/*.cs'
+      - '**/*.xaml'
+      - '**/*.csproj'
+      - 'plugin.json'
+      - '.github/workflows/Publish Release.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Read version from plugin.json
+        id: version
+        shell: pwsh
+        run: |
+          $json = Get-Content plugin.json -Raw | ConvertFrom-Json
+          if ([string]::IsNullOrWhiteSpace($json.Version)) { throw 'plugin.json has no Version' }
+          "version=$($json.Version)" >> $env:GITHUB_OUTPUT
+          Write-Host "plugin.json Version = $($json.Version)"
+
+      - name: Build
+        run: dotnet build -c Release --nologo
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $out = 'bin/Release'
+          $required = @(
+            'Flow.Launcher.Plugin.DeepLTranslate.dll',
+            'plugin.json',
+            'Images/deepl.png'
+          )
+          foreach ($f in $required) {
+            if (-not (Test-Path (Join-Path $out $f))) { throw "Missing build output: $f" }
+          }
+          $zip = 'Flow.Launcher.Plugin.DeepLTranslate.zip'
+          if (Test-Path $zip) { Remove-Item $zip }
+          Compress-Archive -Path "$out/*" -DestinationPath $zip -CompressionLevel Optimal
+          Write-Host "Created $zip ($((Get-Item $zip).Length) bytes)"
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          [IO.Compression.ZipFile]::OpenRead((Resolve-Path $zip)).Entries | ForEach-Object { Write-Host "  $($_.FullName)" }
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ steps.version.outputs.version }}"
+          name: "v${{ steps.version.outputs.version }}"
+          files: Flow.Launcher.Plugin.DeepLTranslate.zip
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          body: |
+            DeepL Translate for Flow Launcher — v${{ steps.version.outputs.version }}.
+
+            Download `Flow.Launcher.Plugin.DeepLTranslate.zip` below, then unpack it into
+            `%APPDATA%\FlowLauncher\Plugins\Flow.Launcher.Plugin.DeepLTranslate\` (or install
+            from the Flow Launcher Plugin Store) and restart Flow Launcher.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

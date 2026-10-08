@@ -137,7 +137,7 @@ namespace Flow.Launcher.Plugin.DeepLTranslate
         private bool IsAnyDropDownOpen() =>
             EndpointCombo.IsDropDownOpen || SourceCombo.IsDropDownOpen || TargetCombo.IsDropDownOpen;
 
-        private void ApiKeyBox_LostFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void AddKeyButton_Click(object sender, RoutedEventArgs e)
         {
             SaveApiKey();
         }

@@ -10,12 +10,15 @@
 
             <!-- API key -->
             <TextBlock Text="DeepL API key" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,6"/>
-            <PasswordBox x:Name="ApiKeyBox" Height="28" VerticalContentAlignment="Center"
-                         LostKeyboardFocus="ApiKeyBox_LostFocus"/>
+            <PasswordBox x:Name="ApiKeyBox" Height="28" VerticalContentAlignment="Center"/>
             <TextBlock x:Name="ApiKeyStatus" Margin="0,4,0,0" Foreground="#888888" FontSize="12"
                        Text="No key set"/>
-            <Button x:Name="ClearKeyButton" Content="Clear key" Margin="0,8,0,0" Padding="12,4"
-                    HorizontalAlignment="Left" Click="ClearKeyButton_Click"/>
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <Button x:Name="AddKeyButton" Content="Add API key" Padding="12,4"
+                        Click="AddKeyButton_Click"/>
+                <Button x:Name="ClearKeyButton" Content="Clear key" Padding="12,4" Margin="8,0,0,0"
+                        Click="ClearKeyButton_Click"/>
+            </StackPanel>
 
             <!-- Endpoint -->
             <TextBlock Text="DeepL API plan" FontWeight="SemiBold" FontSize="14" Margin="0,20,0,6"/>

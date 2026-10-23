@@ -60,6 +60,11 @@ namespace Flow.Launcher.Plugin.DeepLTranslate
                 SourceCombo.SelectedIndex = SelectByCode(SourceCombo, _settings.DefaultSourceLanguage);
                 TargetCombo.SelectedIndex = SelectByCode(TargetCombo, _settings.DefaultTargetLanguage);
 
+                DelaySlider.Minimum = Settings.MinTranslationDelayMs;
+                DelaySlider.Maximum = Settings.MaxTranslationDelayMs;
+                DelaySlider.Value = _settings.TranslationDelayMs;
+                DelayValueText.Text = $"{_settings.TranslationDelayMs} ms";
+
                 UpdateApiKeyStatus();
             }
             finally
@@ -189,8 +194,18 @@ namespace Flow.Launcher.Plugin.DeepLTranslate
             SaveSettings();
         }
 
+        private void DelaySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            DelayValueText.Text = $"{(int)e.NewValue} ms";
+            if (_loading) return;
+
+            _settings.TranslationDelayMs = (int)e.NewValue;
+            SaveSettings();
+        }
+
         private void SaveSettings()
         {
+            // The delay is read from _settings on every query, so a change here applies immediately.
             _context.API.SaveSettingJsonStorage<Settings>();
         }
     }

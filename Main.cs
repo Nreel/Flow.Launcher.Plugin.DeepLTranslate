@@ -20,6 +20,12 @@ namespace Flow.Launcher.Plugin.DeepLTranslate
         {
             _context = context;
             _settings = context.API.LoadSettingJsonStorage<Settings>();
+
+            // The debounce lives in QueryAsync (see there), so Flow's own per-query wait must be zero.
+            // Zero also overrides the value Flow loaded from its plugin settings snapshot, which would
+            // otherwise add a second, unrelated delay whenever Flow's global search delay is enabled.
+            context.CurrentPluginMetadata.SearchDelayTime = 0;
+
             _iconPath = Path.Combine(context.CurrentPluginMetadata.PluginDirectory, "Images", "deepl.png");
             return Task.CompletedTask;
         }
@@ -72,6 +78,11 @@ namespace Flow.Launcher.Plugin.DeepLTranslate
             // 4. Translate.
             try
             {
+                // Debounce inside the plugin: Flow only honours Metadata.SearchDelayTime when its global
+                // "search delay" option is on, so the user's delay is enforced here instead. Flow cancels
+                // token as soon as the query is superseded, so this wait aborts on the next keystroke.
+                await Task.Delay(_settings.TranslationDelayMs, token).ConfigureAwait(false);
+
                 var translated = await _client.TranslateAsync(
                     request.Text,
                     request.SourceLanguage,

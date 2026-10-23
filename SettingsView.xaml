@@ -31,6 +31,18 @@
             <TextBlock Text="Default target language" FontWeight="SemiBold" FontSize="14" Margin="0,16,0,6"/>
             <ComboBox x:Name="TargetCombo" Height="28" SelectionChanged="TargetCombo_Changed"/>
 
+            <!-- Translation delay -->
+            <TextBlock Text="Translation delay" FontWeight="SemiBold" FontSize="14" Margin="0,16,0,6"/>
+            <StackPanel Orientation="Horizontal">
+                <Slider x:Name="DelaySlider" Width="320" VerticalAlignment="Center"
+                        TickFrequency="50" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True"
+                        ValueChanged="DelaySlider_ValueChanged"/>
+                <TextBlock x:Name="DelayValueText" Margin="12,0,0,0" VerticalAlignment="Center"
+                           Foreground="#666666" FontSize="12"/>
+            </StackPanel>
+            <TextBlock TextWrapping="Wrap" Foreground="#666666" FontSize="12" Margin="0,4,0,0"
+                       Text="How long to wait after you stop typing before calling DeepL. Each call is billable, so the minimum is 200 ms. 200–5000 ms; 450 ms is the default."/>
+
             <!-- Usage -->
             <TextBlock Text="How to use" FontWeight="SemiBold" FontSize="14" Margin="0,20,0,6"/>
             <TextBlock TextWrapping="Wrap" Foreground="#666666" FontSize="12"

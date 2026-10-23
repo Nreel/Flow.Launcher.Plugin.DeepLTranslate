@@ -8,10 +8,9 @@
   "Name": "DeepL Translate",
   "Description": "Translate text using the DeepL API with automatic language detection and per-query language overrides",
   "Author": "Nreel",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Language": "csharp",
   "Website": "https://github.com/Nreel/Flow.Launcher.Plugin.DeepLTranslate",
   "ExecuteFileName": "Flow.Launcher.Plugin.DeepLTranslate.dll",
-  "IcoPath": "Images\\deepl.png",
-  "SearchDelayTime": 450
+  "IcoPath": "Images\\deepl.png"
 }

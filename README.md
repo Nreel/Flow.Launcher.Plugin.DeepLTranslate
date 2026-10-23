@@ -13,6 +13,7 @@ detection and per-query language overrides.
 - Translate via the DeepL API (Free or Pro plan, selectable in settings).
 - Automatic source-language detection (DeepL's built-in detection).
 - Configurable default source and target languages.
+- Configurable search delay (how long the plugin waits after you stop typing before calling DeepL).
 - Per-query overrides: `tr es hola` → Spanish, `tr en es hello` → English → Spanish.
 - API key is encrypted at rest with Windows DPAPI and masked in the settings UI.
 
@@ -70,6 +71,15 @@ Open Flow Launcher **Settings → Plugins → DeepL Translate**.
 2. **DeepL API plan** — Free (`api-free.deepl.com`) or Pro (`api.deepl.com`).
 3. **Default source language** — `Auto-detect` (recommended) or a fixed language.
 4. **Default target language** — e.g. English (US).
+5. **Translation delay** — how long the plugin waits after you stop typing before calling
+   DeepL, in milliseconds: `200`–`5000`, default `450`. Every debounced query is a billable
+   DeepL request, so the floor is intentionally not `0`; raise it on slow connections or to
+   cut billed requests. Applies immediately, no restart.
+
+   The wait is enforced by the plugin itself, so it works regardless of Flow Launcher's
+   global *search delay* option (which is off by default and, when off, makes Flow ignore
+   every plugin's own `SearchDelayTime`). Typing again during the wait cancels it, so an
+   abandoned query never reaches the API.
 
 ## Usage
 

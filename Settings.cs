@@ -1,3 +1,4 @@
+using System;
 using Flow.Launcher.Plugin;
 
 namespace Flow.Launcher.Plugin.DeepLTranslate
@@ -27,5 +28,21 @@ namespace Flow.Launcher.Plugin.DeepLTranslate
         /// Default target language (DeepL target code, e.g. "EN-US").
         /// </summary>
         public string DefaultTargetLanguage { get; set; } = "EN-US";
+
+        public const int MinTranslationDelayMs = 200;
+        public const int MaxTranslationDelayMs = 5000;
+        public const int DefaultTranslationDelayMs = 450;
+
+        private int _translationDelayMs = DefaultTranslationDelayMs;
+
+        /// <summary>
+        /// Milliseconds Flow Launcher waits after the user stops typing before querying this plugin.
+        /// Clamped to [<see cref="MinTranslationDelayMs"/>, <see cref="MaxTranslationDelayMs"/>].
+        /// </summary>
+        public int TranslationDelayMs
+        {
+            get => _translationDelayMs;
+            set => _translationDelayMs = Math.Clamp(value, MinTranslationDelayMs, MaxTranslationDelayMs);
+        }
     }
 }
